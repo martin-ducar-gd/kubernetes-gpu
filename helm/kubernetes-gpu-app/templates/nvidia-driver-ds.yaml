@@ -16,10 +16,9 @@ spec:
     spec:
       serviceAccount: nvidia-driver-installer
       serviceAccountName: nvidia-driver-installer
+{{ toYaml .Values.driver.nodeSelector | indent 8 }}
       tolerations:
-      - key: "node.kubernetes.io/master"
-        effect: "NoSchedule"
-        operator: "Exists"
+{{ toYaml .Values.driver.tolerations | indent 8 }}
       hostNetwork: true
       hostPID: true
       volumes:
@@ -37,8 +36,8 @@ spec:
         imagePullPolicy: Always
         name: nvidia-driver-installer
         resources:
-          requests:
-            cpu: 0.15
+        resources:
+{{ toYaml .Values.device.resources | indent 10 }}
         securityContext:
           privileged: true
         env:

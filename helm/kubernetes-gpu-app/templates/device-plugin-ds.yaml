@@ -21,10 +21,10 @@ spec:
     spec:
       serviceAccount: nvidia-gpu-device-plugin
       serviceAccountName: nvidia-gpu-device-plugin
+      nodeSelector:
+{{ toYaml .Values.driver.nodeSelector | indent 8 }}
       tolerations:
-      - key: "node.kubernetes.io/master"
-        effect: "NoSchedule"
-        operator: "Exists"
+{{ toYaml .Values.driver.tolerations | indent 8 }}
       priorityClassName: system-node-critical
       volumes:
       - name: device-plugin
@@ -38,9 +38,8 @@ spec:
         command: ["/usr/bin/nvidia-gpu-device-plugin", "-logtostderr"]
         name: nvidia-gpu-device-plugin
         resources:
-          requests:
-            cpu: 50m
-            memory: 10Mi
+        resources:
+{{ toYaml .Values.driver.resources | indent 10 }}
         securityContext:
           privileged: true
         volumeMounts:
